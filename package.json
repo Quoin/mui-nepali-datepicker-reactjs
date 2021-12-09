@@ -1,7 +1,7 @@
 {
-    "name": "nepali-datepicker-reactjs",
+    "name": "mui-nepali-datepicker-reactjs",
     "version": "1.1.4",
-    "description": "Nepali Datepicker (Bikram Sambat) as a ReactJS component",
+    "description": "Material UI Nepali Datepicker (Bikram Sambat) as a ReactJS component",
     "keywords": [
         "nepali date picker",
         "nepali",
@@ -12,12 +12,11 @@
         "calender"
     ],
     "author": {
-        "name": "Puncoz Nepal",
-        "url": "https://github.com/puncoz"
+        "name": "JT"
     },
     "license": "MIT",
-    "repository": "https://github.com/puncoz/nepali-datepicker-reactjs",
-    "homepage": "https://puncoz-official.github.io/nepali-datepicker-reactjs",
+    "repository": "https://github.com/Quoin/mui-nepali-datepicker-reactjs",
+    "homepage": "https://github.com/Quoin/mui-nepali-datepicker-reactjs",
     "main": "dist/index.js",
     "module": "dist/index.modern.js",
     "style": "src/NepaliDatePicker.scss",
@@ -44,13 +43,9 @@
         "predeploy": "cd example && yarn install && yarn run build",
         "deploy": "gh-pages -d example/build"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
     "peerDependencies": {
-        "react": "^16.8.0"
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^4.2.4",
@@ -58,8 +53,8 @@
         "@testing-library/user-event": "^7.2.1",
         "@types/jest": "^25.1.4",
         "@types/node": "^12.12.38",
-        "@types/react": "^16.9.27",
-        "@types/react-dom": "^16.9.7",
+        "@types/react": "^17.0.35",
+        "@types/react-dom": "^17.0.11",
         "@typescript-eslint/eslint-plugin": "^2.26.0",
         "@typescript-eslint/parser": "^2.26.0",
         "babel-eslint": "^10.0.3",
@@ -82,8 +77,9 @@
         "npm-run-all": "^4.1.5",
         "prettier": "^2.0.4",
         "prettier-stylelint": "^0.4.2",
-        "react": "^16.13.1",
-        "react-scripts": "^3.4.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-scripts": "^4.0.3",
         "rimraf": "^3.0.2",
         "stylelint": "^13.6.1",
         "stylelint-config-standard": "^20.0.0",
@@ -98,6 +94,8 @@
         "src/NepaliDatePicker.scss"
     ],
     "dependencies": {
+        "@material-ui/core": "^4.12.3",
+        "@material-ui/icons": "^4.11.2",
         "bikram-sambat-js": "^1.0.1",
         "nepali-number": "^1.0.3"
     }

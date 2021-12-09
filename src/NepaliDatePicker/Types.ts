@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react"
+import React, { HTMLAttributes } from "react"
 
 export type voidFunction = () => void
 
@@ -14,7 +14,6 @@ export interface NepaliDatePickerOptions {
     calenderLocale: localeType
     valueLocale: localeType
 }
-
 export interface INepaliDatePicker {
     value: string
     className: HTMLAttributes<HTMLDivElement>["className"]
@@ -22,6 +21,10 @@ export interface INepaliDatePicker {
     onChange: (date: string) => void
     onSelect?: (value: string) => void
     options: NepaliDatePickerOptions
+    componentProps?: object
+    resetButtonText: string
+    resetButtonProps?: object
+    CalendarWrapper: React.ReactNode
 }
 
 export interface NepaliDatePickerProps {
@@ -35,11 +38,16 @@ export interface NepaliDatePickerProps {
         calenderLocale?: NepaliDatePickerOptions["calenderLocale"]
         valueLocale?: NepaliDatePickerOptions["valueLocale"]
     }
+    componentProps?: INepaliDatePicker["componentProps"]
+    resetButtonText: INepaliDatePicker["resetButtonText"]
+    resetButtonProps?: INepaliDatePicker["resetButtonProps"]
+    CalendarWrapper?: INepaliDatePicker["CalendarWrapper"]
 }
 
 export interface NepaliDatepickerEvents {
     change: (value: string) => void
     yearSelect?: (year: number) => void
+    reset: () => void
     monthSelect?: ({ year, month }: YearMonth) => void
     daySelect?: ({ year, month, day }: YearMonthDate) => void
     previousMonthSelect?: ({ month, year }: YearMonth) => void

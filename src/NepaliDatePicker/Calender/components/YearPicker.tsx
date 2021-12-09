@@ -26,7 +26,7 @@ const YearPicker: FunctionComponent<YearPickerProps> = ({ date, onSelect }) => {
 
     const years: OptionType[] = useMemo(
         (): OptionType[] =>
-            range(2000, 2080)
+            range(2000, 2099)
                 .reverse()
                 .map(
                     (year: number): OptionType => ({
@@ -44,10 +44,7 @@ const YearPicker: FunctionComponent<YearPickerProps> = ({ date, onSelect }) => {
 
     return (
         <div className='control year'>
-            <span className='current-year' onClick={() => setShowDropdown(!showDropdown)}>
-                {currentYear.label}
-            </span>
-            {showDropdown && <DropDown options={years} value={currentYear.value} onSelect={handleDropdownView} />}
+            <DropDown options={years} value={currentYear.value} onSelect={handleDropdownView} />
         </div>
     )
 }

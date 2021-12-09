@@ -1,30 +1,45 @@
+import { Box, Button, IconButton, DialogActions, DialogContent, DialogTitle, Typography } from "@material-ui/core"
 import { ADToBS } from "bikram-sambat-js"
-import React, { Fragment, FunctionComponent, useCallback, useEffect, useState } from "react"
-import { NepaliDatepickerEvents, ParsedDate, parsedDateInitialValue, SplittedDate } from "../Types"
+import React, { Fragment, useCallback, useEffect, useState, FunctionComponent, MouseEventHandler } from "react"
+import { localeType, NepaliDatepickerEvents, ParsedDate, parsedDateInitialValue, SplittedDate } from "../Types"
 import { executionDelegation, parseBSDate, stitchDate } from "../Utils/common"
 import CalenderController from "./components/CalenderController"
 import { DayPicker } from "./components/DayPicker"
+import CalendarToday from "@material-ui/icons/CalendarToday"
+import { useTrans } from "../Locale"
+import { useConfig } from "../Config"
+import YearPicker from "./components/YearPicker"
 
 interface CalenderProps {
     value: string
     events: NepaliDatepickerEvents
+    resetButtonText: string
+    resetButtonProps?: object
 }
 
-const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
+const Calender: FunctionComponent<CalenderProps> = ({ value, events, resetButtonText, resetButtonProps }) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false)
+    const [showYearPicker, setShowYearPicker] = useState<boolean>(false)
     const [selectedDate, setSelectedDate] = useState<ParsedDate>(parsedDateInitialValue)
     const [calenderDate, setCalenderDate] = useState<ParsedDate>(parsedDateInitialValue)
 
-    useEffect(() => {
-        const parsedDateValue = parseBSDate(value)
+    const { getConfig } = useConfig()
+    const { trans, numberTrans } = useTrans(getConfig<localeType>("currentLocale"))
 
-        setSelectedDate(parsedDateValue)
+    useEffect(() => {
+        const parsedDateValue = parseBSDate(value || ADToBS(new Date()))
+
+        if (value) {
+            setSelectedDate(parsedDateValue)
+        }
+
         setCalenderDate(parsedDateValue)
+
         setIsInitialized(true)
     }, [value])
 
     useEffect(() => {
-        if (isInitialized) {
+        if (isInitialized && selectedDate.bsYear > 0 && selectedDate.bsMonth > 0 && selectedDate.bsDay > 0) {
             events.change(
                 stitchDate({
                     year: selectedDate.bsYear,
@@ -133,35 +148,37 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
                     if (events.yearSelect) {
                         events.yearSelect(year)
                     }
+
+                    setShowYearPicker(false)
                 },
             )
         },
         [calenderDate],
     )
 
-    const onMonthSelectHandler = useCallback(
-        (month) => {
-            executionDelegation(
-                () => {
-                    setCalenderDate(
-                        parseBSDate(
-                            stitchDate({
-                                year: calenderDate.bsYear,
-                                month,
-                                day: calenderDate.bsDay,
-                            }),
-                        ),
-                    )
-                },
-                () => {
-                    if (events.monthSelect) {
-                        events.monthSelect(month)
-                    }
-                },
-            )
-        },
-        [calenderDate],
-    )
+    // const onMonthSelectHandler = useCallback(
+    //     (month) => {
+    //         executionDelegation(
+    //             () => {
+    //                 setCalenderDate(
+    //                     parseBSDate(
+    //                         stitchDate({
+    //                             year: calenderDate.bsYear,
+    //                             month,
+    //                             day: calenderDate.bsDay,
+    //                         }),
+    //                     ),
+    //                 )
+    //             },
+    //             () => {
+    //                 if (events.monthSelect) {
+    //                     events.monthSelect(month)
+    //                 }
+    //             },
+    //         )
+    //     },
+    //     [calenderDate],
+    // )
 
     const onDaySelectHandler = useCallback((date: SplittedDate) => {
         executionDelegation(
@@ -179,29 +196,56 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
         )
     }, [])
 
-    return (
-        <div className='calender'>
-            <div className='calendar-wrapper'>
-                {isInitialized && (
-                    <Fragment>
-                        <CalenderController
-                            onPreviousMonth={onPreviousMonthHandler}
-                            onNextMonth={onNextMonthClickHandler}
-                            calenderDate={calenderDate}
-                            onToday={onTodayClickHandler}
-                            onYearSelect={onYearSelectHandler}
-                            onMonthSelect={onMonthSelectHandler}
-                        />
+    const handleReset: MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.preventDefault()
+        events.reset()
+    }
 
-                        <DayPicker
-                            selectedDate={selectedDate}
-                            calenderDate={calenderDate}
-                            onDaySelect={onDaySelectHandler}
-                        />
-                    </Fragment>
-                )}
-            </div>
-        </div>
+    const resetButtonTxt = resetButtonText || "Reset"
+
+    const currentYear = numberTrans(calenderDate.bsYear)
+
+    return (
+        <Fragment>
+            <DialogTitle className='calender-header-container'>
+                <Box className='calender-header' bgcolor='primary.main'>
+                    <Button onClick={() => setShowYearPicker(true)} size='small' className='yearBtn'>
+                        {currentYear}
+                    </Button>
+                    <Typography variant='h4'>{numberTrans(value || ADToBS(new Date()))}</Typography>
+                </Box>
+            </DialogTitle>
+            <DialogContent className='calender'>
+                <div className='calender-wrapper'>
+                    {isInitialized &&
+                        (showYearPicker ? (
+                            <YearPicker date={calenderDate} onSelect={onYearSelectHandler} />
+                        ) : (
+                            <Fragment>
+                                <CalenderController
+                                    onPreviousMonth={onPreviousMonthHandler}
+                                    onNextMonth={onNextMonthClickHandler}
+                                    calenderDate={calenderDate}
+                                />
+
+                                <DayPicker
+                                    selectedDate={selectedDate}
+                                    calenderDate={calenderDate}
+                                    onDaySelect={onDaySelectHandler}
+                                />
+                            </Fragment>
+                        ))}
+                </div>
+            </DialogContent>
+            <DialogActions className='calender-actions'>
+                <IconButton onClick={onTodayClickHandler} size='small' color='primary' aria-label={trans("today")}>
+                    <CalendarToday fontSize='inherit' />
+                </IconButton>
+                <Button onClick={handleReset} size='small' {...resetButtonProps}>
+                    {resetButtonTxt}
+                </Button>
+            </DialogActions>
+        </Fragment>
     )
 }
 
