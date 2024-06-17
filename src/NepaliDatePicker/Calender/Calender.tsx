@@ -1,11 +1,11 @@
-import { Box, Button, IconButton, DialogActions, DialogContent, DialogTitle, Typography } from "@material-ui/core"
+import { Box, Button, IconButton, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material"
 import { ADToBS } from "bikram-sambat-js"
 import React, { Fragment, useCallback, useEffect, useState, FunctionComponent, MouseEventHandler } from "react"
 import { localeType, NepaliDatepickerEvents, ParsedDate, parsedDateInitialValue, SplittedDate } from "../Types"
 import { executionDelegation, parseBSDate, stitchDate } from "../Utils/common"
 import CalenderController from "./components/CalenderController"
 import { DayPicker } from "./components/DayPicker"
-import CalendarToday from "@material-ui/icons/CalendarToday"
+import CalendarToday from "@mui/icons-material/CalendarToday"
 import { useTrans } from "../Locale"
 import { useConfig } from "../Config"
 import YearPicker from "./components/YearPicker"
@@ -131,7 +131,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events, resetButton
     }, [])
 
     const onYearSelectHandler = useCallback(
-        (year) => {
+        (year: SplittedDate["year"]) => {
             executionDelegation(
                 () => {
                     setCalenderDate(

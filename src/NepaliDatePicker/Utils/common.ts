@@ -11,9 +11,9 @@ import {
 } from "./DateValidations"
 
 export const range = (start: number, end: number, step: number = 1): number[] => {
-    const list = []
+    const list: number[] = []
 
-    for (let i = start; i <= end; i = i + step) {
+    for (let i: number = start; i <= end; i = i + step) {
         list.push(i)
     }
 

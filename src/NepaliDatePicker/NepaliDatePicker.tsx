@@ -2,10 +2,10 @@ import React, { FunctionComponent, useCallback, useEffect, useRef, useState } fr
 import { Calender } from "./Calender"
 import { useConfig } from "./Config"
 import { useTrans } from "./Locale"
-import { ENGLISH, INepaliDatePicker, localeType, NepaliDatepickerEvents } from "./Types"
+import { ENGLISH, INepaliDatePicker, localeType, NepaliDatepickerEvents, SplittedDate } from "./Types"
 import { executionDelegation, stitchDate } from "./Utils/common"
-import Dialog from "@material-ui/core/Dialog"
-import { TextField } from "@material-ui/core"
+import Dialog from "@mui/material/Dialog"
+import { TextField } from "@mui/material"
 
 const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
     const {
@@ -30,10 +30,9 @@ const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
     const { numberTrans } = useTrans(getConfig<localeType>("currentLocale"))
 
     const toEnglish = useCallback((val: string): string => numberTrans(val, ENGLISH), [])
-    const returnDateValue = useCallback(
-        (val: string): string => numberTrans(val, options.valueLocale),
-        [options.valueLocale],
-    )
+    const returnDateValue = useCallback((val: string): string => numberTrans(val, options.valueLocale), [
+        options.valueLocale,
+    ])
 
     useEffect(() => {
         setConfig("currentLocale", options.calenderLocale)
@@ -102,7 +101,7 @@ const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
     )
 
     const handleOnDaySelect = useCallback(
-        (selectedDate) => {
+        (selectedDate: SplittedDate) => {
             executionDelegation(
                 () => {
                     if (options.closeOnSelect) {

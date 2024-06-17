@@ -1,10 +1,10 @@
-import { IconButton } from "@material-ui/core"
+import { IconButton } from "@mui/material"
 import React, { FunctionComponent } from "react"
 import { CalenderData, useConfig } from "../../Config"
 import { useTrans } from "../../Locale"
 import { localeType, ParsedDate } from "../../Types"
-import ArrowBackIos from "@material-ui/icons/ArrowBackIos"
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos"
+import ArrowBackIos from "@mui/icons-material/ArrowBackIos"
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 
 interface CalenderControllerProps {
     onNextMonth: () => void

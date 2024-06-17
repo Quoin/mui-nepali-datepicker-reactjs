@@ -1,4 +1,3 @@
-import { StylesProvider, createGenerateClassName } from "@material-ui/core"
 import React, { FunctionComponent, useMemo } from "react"
 import "../NepaliDatePicker.scss"
 import { ConfigProvider } from "./Config"
@@ -16,16 +15,10 @@ const NepaliDatePickerWrapper: FunctionComponent<NepaliDatePickerProps> = (props
         [props.options],
     )
 
-    const generateClassName = createGenerateClassName({
-        seed: "ne-date-picker",
-    })
-
     return (
-        <StylesProvider generateClassName={generateClassName}>
-            <ConfigProvider>
-                <NepaliDatePicker {...({ ...props, options: calenderOptions } as INepaliDatePicker)} />
-            </ConfigProvider>
-        </StylesProvider>
+        <ConfigProvider>
+            <NepaliDatePicker {...({ ...props, options: calenderOptions } as INepaliDatePicker)} />
+        </ConfigProvider>
     )
 }
 
